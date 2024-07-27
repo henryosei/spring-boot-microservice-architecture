@@ -1,0 +1,15 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: post-route
+            uri: http://localhost:8080
+            predicates:
+              - Path=/**
+
+
