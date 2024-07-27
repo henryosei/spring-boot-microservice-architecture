@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM amazoncorretto:21-alpine
 LABEL authors="henryosei"
-
-ENTRYPOINT ["top", "-b"]
+COPY target/discovery-server-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]

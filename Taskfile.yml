@@ -1,0 +1,11 @@
+# https://taskfile.dev
+
+version: '3'
+
+
+tasks:
+  api:
+    dir: ./api-gateway
+    cmds:
+      - mvn clean ./api-gateway/pom.xml
+    silent: true

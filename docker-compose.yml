@@ -1,0 +1,44 @@
+services:
+  #  api-gateway:
+  #    build:
+  #      context: api-gateway
+  #      dockerfile: Dockerfile
+  #    healthcheck:
+  #      test: curl -f http://localhost:8082/actuator/health || exit 1
+  #    ports:
+  #      - 8082:8082
+  config-server:
+    build:
+      context: config-server
+      dockerfile: Dockerfile
+    ports:
+      - 8761:8761
+    healthcheck:
+      test: curl -i http://localhost:8761/actuator/health || exit 1
+
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: api-gateway
+      dockerfile: Dockerfile
+    healthcheck:
+      test: curl -f http://localhost:8082/actuator/health || exit 1
+      interval: 10s
+      retries: 3
+      timeout: 10s
+    ports:
+      - 8082:8082
+    depends_on:
+      config-server:
+        condition: service_healthy
+
+
+  zipkin-server:
+    image: openzipkin/zipkin
+    ports:
+      - 9411:9411
+
+  discovery-service:
+    build:
+      context: discovery-server
+      dockerfile: Dockerfile
